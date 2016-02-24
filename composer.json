@@ -1,0 +1,24 @@
+{
+  "name": "ephemeral/user",
+  "description": "Abstracted user provider for ephemeral",
+  "license": "proprietary",
+  "minimum-stability": "dev",
+  "authors": [
+    {
+      "name": "Bret Combast",
+      "email": "keldenar@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.9",
+    "silex/silex": "v1.3.5"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Ephemeral\\": "src/"
+    }
+  }
+}
