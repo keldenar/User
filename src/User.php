@@ -2,6 +2,8 @@
 
 namespace Ephemeral;
 
+use Silex\Application;
+
 class User {
 
     protected $data;
