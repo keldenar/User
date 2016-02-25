@@ -11,6 +11,7 @@ class UserDB implements UserInterface {
 
     protected $app;
     protected $mongo;
+    protected $userinfo;
 
     public function __construct(Application $app, $username="") {
         $this->app = $app;
@@ -45,17 +46,17 @@ class UserDB implements UserInterface {
         $collection = $this->app['mongodb']->selectDatabase("ephemeral")->selectCollection('users');
         $user = $collection->findOne(array("username" => $username));
         $user = is_null($user) ? $user_template : $user;
+        $this->userinfo = $user;
         return $user;
     }
 
     public function set($payload) {
         //get the user if it exists traverse the payload and replace values in the user then reset in the database.
-        $user = $this->getUser($payload['username']);
+        $user = $this->get($payload['username']);
         foreach ($payload as $key=>$value) {
             $user[$key] = $value;
         }
         unset($user['password']);
-        unset($user['secure']);
 
         $user = $this->updateUser($this->app['mongodb']->selectDatabase("ephemeral")->selectCollection('users'), $user);
         return $user;
@@ -63,6 +64,15 @@ class UserDB implements UserInterface {
 
     public function update($username, $data)
     {
+        $user = $this->get($username);
+
+        foreach ($data as $key=>$value) {
+            $user[$key] = $value;
+        }
+        $collection = $this->app['mongodb']->selectDatabase("ephemeral")->selectCollection('users');
+        $collection->update(array('_id' => $user['_id']), $user, array("upsert" => true) );
+        $this->userinfo = $user;
+        return $this->userinfo;
 
     }
 
@@ -72,7 +82,6 @@ class UserDB implements UserInterface {
     }
 
     public function updateUser(Collection $collection, $user) {
-        dump($collection);
         $collection->update(array('username' => $user['username']), $user, array("upsert" => true) );
         return $collection->findOne(array('username' => $user['username']));
     }
