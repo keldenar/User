@@ -4,7 +4,8 @@ namespace Ephemeral\Providers;
 
 use Silex\ServiceProviderInterface;
 use Silex\Application;
-use Ephemeral\User;
+use Ephemeral\UserAPI;
+use Ephemeral\UserDB;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -25,8 +26,10 @@ class UserProvider implements ServiceProviderInterface
     public function register(Application $app, $type="userAPI")
     {
         // TODO: Implement register() method.
-        $app['user'] = $app->share(function ($app) use ($type) {
-            return new $type($app);
+        $app['user'] = $app->share(function ($app) {
+            if ($app['user.method'] == 'UserDB') return new UserDB($app);
+            if ($app['user.method'] == 'UserAPI') return new UserAPI($app);
+
         });
 
         $app['user.validation'] = new Assert\Collection(array(
