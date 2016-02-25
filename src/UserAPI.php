@@ -53,11 +53,13 @@ class UserAPI implements UserInterface {
         return json_decode($response->getBody(true), true);
     }
 
-    public function fromJson() {
+    public function update($username, $data)
+    {
 
     }
 
-    public function toJson() {
+    public function delete($username)
+    {
 
     }
 

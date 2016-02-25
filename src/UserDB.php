@@ -61,6 +61,16 @@ class UserDB implements UserInterface {
         return $user;
     }
 
+    public function update($username, $data)
+    {
+
+    }
+
+    public function delete($username)
+    {
+
+    }
+
     public function updateUser(Collection $collection, $user) {
         dump($collection);
         $collection->update(array('username' => $user['username']), $user, array("upsert" => true) );

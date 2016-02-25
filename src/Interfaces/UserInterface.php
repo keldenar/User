@@ -11,5 +11,7 @@ interface UserInterface
     public function __call($name, $params);
     public function get($username = "");
     public function set($data);
+    public function update($username, $data);
+    public function delete($username);
 
 }
