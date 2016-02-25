@@ -2,24 +2,32 @@
 
 namespace Ephemeral;
 
-<?php
-
-namespace App;
-
 use Doctrine\MongoDB\Collection;
 use Doctrine\DBAL\Connection;
+use Ephemeral\Interfaces\UserInterface;
 use Silex\Application;
 
-class user {
+class UserDB implements UserInterface {
 
     protected $app;
     protected $mongo;
 
-    public function __construct(Application $app) {
+    public function __construct(Application $app, $username="") {
         $this->app = $app;
     }
 
-    public function getUser($username, $secure = false) {
+    public function __call($name, $params) {
+        if (array_key_exists($name, $this->userinfo)) {
+            if (is_scalar($this->userinfo[$name])) {
+                return $this->userinfo[$name];
+            } elseif (is_array($this->userinfo[$name])) {
+                return $this->userinfo[$name][$params[0]];
+            }
+        }
+        return null;
+    }
+
+    public function get($username = "") {
         // The template
         $user_template = [
             "username" => '',
@@ -32,7 +40,6 @@ class user {
                 "users" => [
                 ],
             ],
-            "secure" => $secure,
         ];
 
         $collection = $this->app['mongodb']->selectDatabase("ephemeral")->selectCollection('users');
@@ -41,7 +48,7 @@ class user {
         return $user;
     }
 
-    public function setUser($payload) {
+    public function set($payload) {
         //get the user if it exists traverse the payload and replace values in the user then reset in the database.
         $user = $this->getUser($payload['username']);
         foreach ($payload as $key=>$value) {
