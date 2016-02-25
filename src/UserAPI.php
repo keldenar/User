@@ -5,7 +5,7 @@ namespace Ephemeral;
 use Ephemeral\Interfaces\UserInterface;
 use Silex\Application;
 
-class User implements UserInterface {
+class UserAPI implements UserInterface {
 
     protected $data;
 
