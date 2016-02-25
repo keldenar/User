@@ -23,7 +23,7 @@ class UserProvider implements ServiceProviderInterface
      * This method should only be used to configure services and parameters.
      * It should not get services.
      */
-    public function register(Application $app, $type="userAPI")
+    public function register(Application $app)
     {
         // TODO: Implement register() method.
         $app['user'] = $app->share(function ($app) {
