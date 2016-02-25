@@ -2,6 +2,8 @@
 
 namespace Ephemeral\Interfaces;
 
+use Silex\Application;
+
 interface UserInterface
 {
 
