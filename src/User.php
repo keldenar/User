@@ -4,7 +4,7 @@ namespace Ephemeral;
 
 use Silex\Application;
 
-class User {
+class UserAPI {
 
     protected $data;
 
