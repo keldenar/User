@@ -38,36 +38,37 @@ class UserProvider implements ServiceProviderInterface
             )
         );
 
-        $app['user.form'] = $app['form.factory']->createBuilder(Type\FormType::class, [])
-            ->add('username', Type\TextType::class, array(
-                'required' => true,
-                'label' => "Username",
-                'attr' => array('class' => 'form-control')))
-            ->add('password', Type\RepeatedType::class, array(
-                'type' => Type\PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
-                'first_options' => array('label' => 'Password'),
-                'second_options' => array('label' => 'Confirm Password'),
-                'required' => true,
-                'label' => "Password",
-                'options' => array('attr' => array('class' => 'form-control'))
-            ))
-            ->add('fullname', Type\TextType::class, array(
-                'required' => true,
-                'label' => "Full Name",
-                'attr' => array('class' => 'form-control')))
-            ->add('email', Type\EmailType::class, array(
-                'required' => true,
-                'label' => "Email",
-                'attr' => array('class' => 'form-control')))
-            ->add('bio', Type\TextareaType::class, array(
-                'label' => "Biography",
-                'attr' => array('class' => 'form-control')))
-            ->add('register', Type\SubmitType::class, array('label' => "Register", 'attr' => array('type' => 'submit', 'class' => 'btn btn-success form-control')))
-            ->add('reset', Type\ResetType::class, array('label' => "Reset", 'attr' => array('class' => 'btn btn-default form-control')))
-            ->getForm();
+        if (array_key_exists("form.factory", $app)) {
+            $app['user.form'] = $app['form.factory']->createBuilder(Type\FormType::class, [])
+                ->add('username', Type\TextType::class, array(
+                    'required' => true,
+                    'label' => "Username",
+                    'attr' => array('class' => 'form-control')))
+                ->add('password', Type\RepeatedType::class, array(
+                    'type' => Type\PasswordType::class,
+                    'invalid_message' => 'The password fields must match.',
+                    'first_options' => array('label' => 'Password'),
+                    'second_options' => array('label' => 'Confirm Password'),
+                    'required' => true,
+                    'label' => "Password",
+                    'options' => array('attr' => array('class' => 'form-control'))
+                ))
+                ->add('fullname', Type\TextType::class, array(
+                    'required' => true,
+                    'label' => "Full Name",
+                    'attr' => array('class' => 'form-control')))
+                ->add('email', Type\EmailType::class, array(
+                    'required' => true,
+                    'label' => "Email",
+                    'attr' => array('class' => 'form-control')))
+                ->add('bio', Type\TextareaType::class, array(
+                    'label' => "Biography",
+                    'attr' => array('class' => 'form-control')))
+                ->add('register', Type\SubmitType::class, array('label' => "Register", 'attr' => array('type' => 'submit', 'class' => 'btn btn-success form-control')))
+                ->add('reset', Type\ResetType::class, array('label' => "Reset", 'attr' => array('class' => 'btn btn-default form-control')))
+                ->getForm();
+        }
     }
-
     /**
      * Bootstraps the application.
      *
