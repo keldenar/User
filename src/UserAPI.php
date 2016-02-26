@@ -11,7 +11,7 @@ class UserAPI implements UserInterface
     protected $data;
 
     protected $app;
-    protected $userinfo;
+    protected $userinfo = array();
 
     public function __construct(Application $app, $username = "") {
         $this->app = $app;

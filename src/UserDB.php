@@ -12,7 +12,7 @@ class UserDB implements UserInterface
 
     protected $app;
     protected $mongo;
-    protected $userinfo;
+    protected $userinfo = array();
 
     public function __construct(Application $app, $username="")
     {
