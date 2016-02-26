@@ -116,6 +116,6 @@ class UserDB implements UserInterface
 
     public function all()
     {
-
+        return $this->userinfo;
     }
 }
