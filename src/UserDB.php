@@ -7,7 +7,8 @@ use Doctrine\DBAL\Connection;
 use Ephemeral\Interfaces\UserInterface;
 use Silex\Application;
 
-class UserDB implements UserInterface {
+class UserDB implements UserInterface
+{
 
     protected $app;
     protected $mongo;

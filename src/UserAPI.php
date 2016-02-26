@@ -5,7 +5,8 @@ namespace Ephemeral;
 use Ephemeral\Interfaces\UserInterface;
 use Silex\Application;
 
-class UserAPI implements UserInterface {
+class UserAPI implements UserInterface
+{
 
     protected $data;
 
@@ -17,7 +18,8 @@ class UserAPI implements UserInterface {
     }
 
     // THis is naive and will need to be updated to be more flexible
-    public function __call($name, $params) {
+    public function __call($name, $params)
+    {
         if (array_key_exists($name, $this->userinfo)) {
             if (is_scalar($this->userinfo[$name])) {
                 return $this->userinfo[$name];
@@ -28,7 +30,8 @@ class UserAPI implements UserInterface {
         return null;
     }
 
-    public function logged() {
+    public function logged()
+    {
         if ($this->app['session']->has("token_info")) {
             $token_info = $this->app['session']->get('token_info');
             if (array_key_exists("refresh_token", $token_info)) {
@@ -37,7 +40,8 @@ class UserAPI implements UserInterface {
         }
     }
 
-    public function get($username="") {
+    public function get($username="")
+    {
         if ($username == "") {
             $response = $this->app['api']->get('profile', '/v1/profile');
         } else {
@@ -47,7 +51,8 @@ class UserAPI implements UserInterface {
         return $this->userinfo;
     }
 
-    public function set($data) {
+    public function set($data)
+    {
         $endpoint = sprintf("/v1/profile/%s", $this->app['user']->username());
         $response = $this->app['api']->post('profile',$endpoint, $data);
         return json_decode($response->getBody(true), true);
