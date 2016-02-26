@@ -50,6 +50,28 @@ class UserDB implements UserInterface {
         return $user;
     }
 
+    public function getById($id = "") {
+        // The template
+        $user_template = [
+            "username" => '',
+            "email" => '',
+            "fullname" => "",
+            "bio" => "",
+            "subscribers" => 0,
+            "subscribed" => [
+                "count" => 0,
+                "users" => [
+                ],
+            ],
+        ];
+
+        $collection = $this->app['mongodb']->selectDatabase("ephemeral")->selectCollection('users');
+        $user = $collection->findOne(array("_id" => $id));
+        $user = is_null($user) ? $user_template : $user;
+        $this->userinfo = $user;
+        return $user;
+    }
+
     public function set($payload) {
         //get the user if it exists traverse the payload and replace values in the user then reset in the database.
         $user = $this->get($payload['username']);
