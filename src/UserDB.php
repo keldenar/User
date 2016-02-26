@@ -13,7 +13,8 @@ class UserDB implements UserInterface {
     protected $mongo;
     protected $userinfo;
 
-    public function __construct(Application $app, $username="") {
+    public function __construct(Application $app, $username="")
+    {
         $this->app = $app;
     }
 
@@ -28,7 +29,8 @@ class UserDB implements UserInterface {
         return null;
     }
 
-    public function get($username = "") {
+    public function get($username = "")
+    {
         // The template
         $user_template = [
             "username" => '',
@@ -50,7 +52,8 @@ class UserDB implements UserInterface {
         return $user;
     }
 
-    public function getById($id = "") {
+    public function getById($id = "")
+    {
         // The template
         $user_template = [
             "username" => '',
@@ -72,7 +75,8 @@ class UserDB implements UserInterface {
         return $user;
     }
 
-    public function set($payload) {
+    public function set($payload)
+    {
         //get the user if it exists traverse the payload and replace values in the user then reset in the database.
         $user = $this->get($payload['username']);
         foreach ($payload as $key=>$value) {
@@ -103,8 +107,14 @@ class UserDB implements UserInterface {
 
     }
 
-    public function updateUser(Collection $collection, $user) {
+    public function updateUser(Collection $collection, $user)
+    {
         $collection->update(array('username' => $user['username']), $user, array("upsert" => true) );
         return $collection->findOne(array('username' => $user['username']));
+    }
+
+    public function all()
+    {
+
     }
 }

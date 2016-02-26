@@ -63,4 +63,9 @@ class UserAPI implements UserInterface {
 
     }
 
+    public function all()
+    {
+
+    }
+
 }

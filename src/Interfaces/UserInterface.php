@@ -13,5 +13,6 @@ interface UserInterface
     public function set($data);
     public function update($username, $data);
     public function delete($username);
+    public function all();
 
 }
