@@ -24,7 +24,11 @@ class UserDB implements UserInterface
             if (is_scalar($this->userinfo[$name])) {
                 return $this->userinfo[$name];
             } elseif (is_array($this->userinfo[$name])) {
-                return $this->userinfo[$name][$params[0]];
+                if ($params == []) {
+                    return $this->userinfo[$name];
+                } else {
+                    return $this->userinfo[$name][$params[0]];
+                }
             }
         }
         return null;
