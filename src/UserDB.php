@@ -118,4 +118,41 @@ class UserDB implements UserInterface
     {
         return $this->userinfo;
     }
+
+    public function findUser($query, $offset = 0, $limit = 10)
+    {
+        $collection = $this->app['mongodb']->selectDatabase("ephemeral")->selectCollection('users');
+        $users=[];
+        $this->findByUsername($collection, $query, $users, $offset, $limit);
+        $this->findByFullname($collection, $query, $users, $offset, $limit);
+        return $users;
+    }
+
+    public function findByUsername(Collection $collection, $query, &$users, $offset, $limit)
+    {
+        $results = $collection->find(array('username' => new \MongoRegex("/^$query/")))->limit($limit)->skip($offset);
+        $this->mergeResults($results, $users);
+    }
+
+    public function findByFullname(Collection $collection, $query, &$users, $offset, $limit)
+    {
+        $results = $collection->find(array('fullname' => new \MongoRegex("/^$query/")))->limit($limit)->skip($offset);
+        $this->mergeResults($results, $users);
+    }
+
+    public function mergeResults($results, &$users)
+    {
+        foreach ($results as $result) {
+            $users[$result['username']] = $result;
+        }
+    }
+
+    public function pruneUser($requested, $user)
+    {
+        foreach ($user as $key=>$value) {
+            if (in_array($key, $requested)) continue;
+            unset($user[$key]);
+        }
+        return $user;
+    }
 }
