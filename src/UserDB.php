@@ -106,20 +106,19 @@ class UserDB implements UserInterface
     }
 
     /**
-     * @param $payload
+     *
+     * Sets a user into the database.
+     *
+     * Notes: Run a get change some values run a set... Simple
+     *
+     * @param $user
      * @return array
      */
-    public function set($payload)
+    public function set($user)
     {
-        //get the user if it exists traverse the payload and replace values in the user then reset in the database.
-        $user = $this->get($payload['username']);
-        foreach ($payload as $key=>$value) {
-            $user[$key] = $value;
-        }
-        unset($user['password']);
-
-        $user = $this->updateUser($this->app['mongodb']->selectDatabase("ephemeral")->selectCollection('users'), $user);
-        return $user;
+        $collection = $this->app['mongodb']->selectDatabase("ephemeral")->selectCollection('users');
+        $collection->update(array('username' => $user['username']), $user, array("upsert" => true) );
+        return $collection->findOne(array('username' => $user['username']));
     }
 
     /**

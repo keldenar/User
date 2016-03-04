@@ -51,6 +51,9 @@ class UserAPI implements UserInterface
     }
 
     /**
+     * Checks the session to see if there is a refresh token. If there is we are logged in.
+     * This may not be correct since my understanding of oauth is bad and I should feel bad.
+     *
      * @return bool
      */
     public function logged()
