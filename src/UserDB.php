@@ -240,8 +240,20 @@ class UserDB implements UserInterface
     public function subscribe($username, $target)
     {
         // Get the user
-        $user = $this->get($payload['username']);
-        $subscribed = $user['subscribed'];
+        $user = $this->get($username);
+        $target = $this->get($target);
+
+        // We're already subscribed don't mess with the numbers
+        if (array_key_exists($target, $user["subscribed"]["users"])) return;
+
+        // Add this to the users subscription list
+        $user["subscribed"]["users"][$target["username"]] = $target["_id"];
+        $user["subscribed"]["count"] = count($user["subscribed"]["users"]);
+        $this->set($user);
+
+        // Increase the targets subscribers count
+        $target["subscribers"] = $target["subscribers"] + 1;
+        $this->set($target);
     }
 
     /**
@@ -253,6 +265,16 @@ class UserDB implements UserInterface
      */
     public function unsubscribe($username, $target)
     {
-
+        // Get the user
+        $user = $this->get($username);
+        if (array_key_exists($target, $user["subscribed"]["users"])) {
+            unset($user["subscribed"]["users"][$target]);
+            // Decrease the subscriber count
+            $target = $this->get($target);
+            $target["subscribers"] = $target["subscribers"] - 1;
+            $this->set($target);
+        }
+        $user["subscribed"]["count"] = count($user["subscribed"]["users"]);
+        $this->set($user);
     }
 }
