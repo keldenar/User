@@ -79,11 +79,11 @@ class UserAPI implements UserInterface
 
     public function subscribe($username, $target)
     {
-
+        $return = $app['api']->post("profile", "/v1/subscribe");
     }
 
     public function unsubscribe($username, $target)
     {
-
+        $return = $app['api']->post("profile", "/v1/unsubscribe");
     }
 }
