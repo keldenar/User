@@ -108,6 +108,9 @@ class UserAPI implements UserInterface
     }
 
     /**
+     *
+     * Makes an api call to the profile server to add a subscription to a user
+     *
      * @param $username
      * @param $target
      *
@@ -119,6 +122,9 @@ class UserAPI implements UserInterface
     }
 
     /**
+     *
+     * Makes an api call to the profile server to remove a subscription from a user
+     *
      * @param $username
      * @param $target
      *

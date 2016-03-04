@@ -232,15 +232,23 @@ class UserDB implements UserInterface
     }
 
     /**
+     *
+     * Adds the target to the users subscription list
+     *
      * @param $username
      * @param $target
      */
     public function subscribe($username, $target)
     {
-
+        // Get the user
+        $user = $this->get($payload['username']);
+        $subscribed = $user['subscribed'];
     }
 
     /**
+     *
+     * Removes the target from the users subscription list
+     *
      * @param $username
      * @param $target
      */
