@@ -159,4 +159,14 @@ class UserDB implements UserInterface
         }
         return $user;
     }
+
+    public function subscribe($username, $target)
+    {
+
+    }
+
+    public function unsubscribe($username, $target)
+    {
+
+    }
 }

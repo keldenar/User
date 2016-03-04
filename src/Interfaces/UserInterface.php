@@ -14,5 +14,7 @@ interface UserInterface
     public function update($username, $data);
     public function delete($username);
     public function all();
+    public function subscribe($username, $target);
+    public function unsubscribe($username, $target);
 
 }
