@@ -3,6 +3,7 @@
  * @author Bret Combast <keldenar@gmail.com>
  * @link https://www.linkedin.com/in/bretcombast
  */
+
 namespace Ephemeral;
 
 use Ephemeral\Interfaces\UserInterface;

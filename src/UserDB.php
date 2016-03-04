@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author Bret Combast <keldenar@gmail.com>
+ * @link https://www.linkedin.com/in/bretcombast
+ */
 
 namespace Ephemeral;
 
@@ -7,6 +11,10 @@ use Doctrine\DBAL\Connection;
 use Ephemeral\Interfaces\UserInterface;
 use Silex\Application;
 
+/**
+ * Class UserDB
+ * @package Ephemeral
+ */
 class UserDB implements UserInterface
 {
 
@@ -14,11 +22,20 @@ class UserDB implements UserInterface
     protected $mongo;
     protected $userinfo = array();
 
+    /**
+     * @param Application $app
+     * @param string $username
+     */
     public function __construct(Application $app, $username="")
     {
         $this->app = $app;
     }
 
+    /**
+     * @param $name
+     * @param $params
+     * @return string|array|null
+     */
     public function __call($name, $params) {
         if (array_key_exists($name, $this->userinfo)) {
             if (is_scalar($this->userinfo[$name])) {
@@ -34,6 +51,10 @@ class UserDB implements UserInterface
         return null;
     }
 
+    /**
+     * @param string $username
+     * @return array
+     */
     public function get($username = "")
     {
         // The template
@@ -57,6 +78,10 @@ class UserDB implements UserInterface
         return $user;
     }
 
+    /**
+     * @param string $id
+     * @return array
+     */
     public function getById($id = "")
     {
         // The template
@@ -80,6 +105,10 @@ class UserDB implements UserInterface
         return $user;
     }
 
+    /**
+     * @param $payload
+     * @return array
+     */
     public function set($payload)
     {
         //get the user if it exists traverse the payload and replace values in the user then reset in the database.
@@ -93,6 +122,11 @@ class UserDB implements UserInterface
         return $user;
     }
 
+    /**
+     * @param $username
+     * @param $data
+     * @return array
+     */
     public function update($username, $data)
     {
         $user = $this->get($username);
@@ -112,17 +146,31 @@ class UserDB implements UserInterface
 
     }
 
+    /**
+     * @param Collection $collection
+     * @param $user
+     * @return mixed
+     */
     public function updateUser(Collection $collection, $user)
     {
         $collection->update(array('username' => $user['username']), $user, array("upsert" => true) );
         return $collection->findOne(array('username' => $user['username']));
     }
 
+    /**
+     * @return array
+     */
     public function all()
     {
         return $this->userinfo;
     }
 
+    /**
+     * @param $query
+     * @param int $offset
+     * @param int $limit
+     * @return array
+     */
     public function findUser($query, $offset = 0, $limit = 10)
     {
         $collection = $this->app['mongodb']->selectDatabase("ephemeral")->selectCollection('users');
@@ -132,18 +180,36 @@ class UserDB implements UserInterface
         return $users;
     }
 
+    /**
+     * @param Collection $collection
+     * @param $query
+     * @param $users
+     * @param $offset
+     * @param $limit
+     */
     public function findByUsername(Collection $collection, $query, &$users, $offset, $limit)
     {
         $results = $collection->find(array('username' => new \MongoRegex("/^$query/")))->limit($limit)->skip($offset);
         $this->mergeResults($results, $users);
     }
 
+    /**
+     * @param Collection $collection
+     * @param $query
+     * @param $users
+     * @param $offset
+     * @param $limit
+     */
     public function findByFullname(Collection $collection, $query, &$users, $offset, $limit)
     {
         $results = $collection->find(array('fullname' => new \MongoRegex("/^$query/")))->limit($limit)->skip($offset);
         $this->mergeResults($results, $users);
     }
 
+    /**
+     * @param $results
+     * @param $users
+     */
     public function mergeResults($results, &$users)
     {
         foreach ($results as $result) {
@@ -151,6 +217,11 @@ class UserDB implements UserInterface
         }
     }
 
+    /**
+     * @param $requested
+     * @param $user
+     * @return mixed
+     */
     public function pruneUser($requested, $user)
     {
         foreach ($user as $key=>$value) {
@@ -160,11 +231,19 @@ class UserDB implements UserInterface
         return $user;
     }
 
+    /**
+     * @param $username
+     * @param $target
+     */
     public function subscribe($username, $target)
     {
 
     }
 
+    /**
+     * @param $username
+     * @param $target
+     */
     public function unsubscribe($username, $target)
     {
 
