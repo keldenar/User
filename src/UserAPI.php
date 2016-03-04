@@ -1,10 +1,17 @@
 <?php
-
+/**
+ * @author Bret Combast <keldenar@gmail.com>
+ * @link https://www.linkedin.com/in/bretcombast
+ */
 namespace Ephemeral;
 
 use Ephemeral\Interfaces\UserInterface;
 use Silex\Application;
 
+/**
+ * Class UserAPI
+ * @package Ephemeral
+ */
 class UserAPI implements UserInterface
 {
 
@@ -13,11 +20,19 @@ class UserAPI implements UserInterface
     protected $app;
     protected $userinfo = array();
 
+    /**
+     * @param Application $app
+     * @param string $username
+     */
     public function __construct(Application $app, $username = "") {
         $this->app = $app;
     }
 
-    // THis is naive and will need to be updated to be more flexible
+    /**
+     * @param $name
+     * @param $params
+     * @return string|null
+     */
     public function __call($name, $params)
     {
         if (array_key_exists($name, $this->userinfo)) {
@@ -34,6 +49,9 @@ class UserAPI implements UserInterface
         return null;
     }
 
+    /**
+     * @return bool
+     */
     public function logged()
     {
         if ($this->app['session']->has("token_info")) {
@@ -44,6 +62,10 @@ class UserAPI implements UserInterface
         }
     }
 
+    /**
+     * @param string $username
+     * @return array|mixed
+     */
     public function get($username="")
     {
         if ($username == "") {
@@ -55,6 +77,10 @@ class UserAPI implements UserInterface
         return $this->userinfo;
     }
 
+    /**
+     * @param $data
+     * @return mixed
+     */
     public function set($data)
     {
         $endpoint = sprintf("/v1/profile/%s", $this->app['user']->username());
@@ -72,16 +98,27 @@ class UserAPI implements UserInterface
 
     }
 
+    /**
+     * @return array
+     */
     public function all()
     {
         return $this->userinfo;
     }
 
+    /**
+     * @param $username
+     * @param $target
+     */
     public function subscribe($username, $target)
     {
         $return = $app['api']->post("profile", "/v1/subscribe");
     }
 
+    /**
+     * @param $username
+     * @param $target
+     */
     public function unsubscribe($username, $target)
     {
         $return = $app['api']->post("profile", "/v1/unsubscribe");
