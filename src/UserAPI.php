@@ -109,6 +109,8 @@ class UserAPI implements UserInterface
     /**
      * @param $username
      * @param $target
+     *
+     * @todo Still needs some robust checking on the return value... or not
      */
     public function subscribe($username, $target)
     {
@@ -118,6 +120,8 @@ class UserAPI implements UserInterface
     /**
      * @param $username
      * @param $target
+     *
+     * @todo Still needs some robust checking on the return value... or not
      */
     public function unsubscribe($username, $target)
     {
