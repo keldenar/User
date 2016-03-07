@@ -41,7 +41,7 @@ class UserProvider implements ServiceProviderInterface
             )
         );
 
-        if (array_key_exists("form.factory", $app)) {
+        if (isset($app['form.factory'])) {
             $app['user.form'] = $app['form.factory']->createBuilder(Type\FormType::class, [])
                 ->add('username', Type\TextType::class, array(
                     'required' => true,
